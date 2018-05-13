@@ -14,7 +14,7 @@ type ValuesGroup struct {
 //    Values(1, "Marty", "McFly").
 //    Values(2, "Emmett", "Brown")
 //  _ = b.String() // ($1, $2, $3), ($4, $5, $6)
-//  _ = b.Param()  // [1, "Marty", "McFly", 2, "Emmett", "Brown"]
+//  _ = b.Params()  // [1, "Marty", "McFly", 2, "Emmett", "Brown"]
 func (g *ValuesGroup) Values(values ...interface{}) *ValuesGroup {
 	g.params = append(g.params, values...)
 	g.groups = append(g.groups, func() string {

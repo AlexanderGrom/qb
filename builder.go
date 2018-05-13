@@ -5,7 +5,7 @@
 //
 //  var q = qb.Query("SELECT id FROM table WHERE %s LIMIT %p", b, 1)
 //  _ = b.String() // SELECT id FROM table WHERE "name" = $1 AND "surname" = $2 LIMIT $3
-//  _ = b.Param()  // ["Marty", "McFly", 1]
+//  _ = b.Params()  // ["Marty", "McFly", 1]
 package qb
 
 import (
@@ -53,6 +53,9 @@ func RegisterGrammar(name string, grammar func() Grammar) {
 }
 
 // Query formats according to a format specifier and returns the sql query string
+//  var q = qb.Query("SELECT id FROM table WHERE name = %p LIMIT %p OFFSET %p", "Tom", 10, 0)
+//  _ = b.String() // SELECT id FROM table WHERE name = $1 LIMIT $2 OFFSET $3
+//  _ = b.Params()  // ["Tom", 10, 0]
 func Query(query string, params ...interface{}) Builder {
 	return &format{
 		query:   query,

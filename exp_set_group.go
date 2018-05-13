@@ -14,7 +14,7 @@ type SetGroup struct {
 // Set adds a new SET expression
 //  var b = new(qb.SetGroup).Set("name", "Tom").Set("surname", "Johnson")
 //  _ = b.String() // "name" = $1, "surname" = $2
-//  _ = b.Param()  // ["Tom", "Johnson"]
+//  _ = b.Params()  // ["Tom", "Johnson"]
 func (g *SetGroup) Set(field string, value interface{}) *SetGroup {
 	g.params = append(g.params, value)
 	g.groups = append(g.groups, func() string {
@@ -26,7 +26,7 @@ func (g *SetGroup) Set(field string, value interface{}) *SetGroup {
 // SetRaw adds a new SET expression
 //  var b = new(qb.SetGroup).SetRaw("jsondata->'name' = %p", "Tom")
 //  _ = b.String() // jsondata->'name' = $1
-//  _ = b.Param()  // ["Tom"]
+//  _ = b.Params()  // ["Tom"]
 func (g *SetGroup) SetRaw(query string, params ...interface{}) *SetGroup {
 	var f = &format{
 		query:   query,
