@@ -1,3 +1,11 @@
+// Package qb is a simple query builder.
+//  var b = new(qb.WhereGroup).
+//    Where("name", "=", "Marty").
+//    Where("surname", "=", "McFly")
+//
+//  var q = qb.Query("SELECT id FROM table WHERE %s LIMIT %p", b, 1)
+//  _ = b.String() // SELECT id FROM table WHERE "name" = $1 AND "surname" = $2 LIMIT $3
+//  _ = b.Param()  // ["Marty", "McFly", 1]
 package qb
 
 import (
