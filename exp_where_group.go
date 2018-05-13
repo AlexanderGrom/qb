@@ -12,7 +12,7 @@ type WhereGroup struct {
 // Where adds an expression to the group
 //  var b = new(qb.WhereGroup).Where("name", "=", "Tom")
 //  _ = b.String() // "name" = $1
-//  _ = b.Params()  // ["Tom"]
+//  _ = b.Params() // ["Tom"]
 func (g *WhereGroup) Where(field, operator string, value interface{}) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, value)
@@ -25,7 +25,7 @@ func (g *WhereGroup) Where(field, operator string, value interface{}) *WhereGrou
 // WhereOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereOr("id", "=", "1").WhereOr("id", "=", "2")
 //  _ = b.String() // "id" = $1 OR "id" = $2
-//  _ = b.Params()  // [1, 2]
+//  _ = b.Params() // [1, 2]
 func (g *WhereGroup) WhereOr(field, operator string, value interface{}) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, value)
@@ -38,7 +38,7 @@ func (g *WhereGroup) WhereOr(field, operator string, value interface{}) *WhereGr
 // WhereRaw adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereRaw("jsondata->%p = %p", "name", "Tom")
 //  _ = b.String() // jsondata->$1 = $2
-//  _ = b.Params()  // ["name", "Tom"]
+//  _ = b.Params() // ["name", "Tom"]
 func (g *WhereGroup) WhereRaw(query string, params ...interface{}) *WhereGroup {
 	var (
 		f = &format{
@@ -57,7 +57,7 @@ func (g *WhereGroup) WhereRaw(query string, params ...interface{}) *WhereGroup {
 // WhereRawOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereRawOr("jsondata->%p = %p", "name", "Tom")
 //  _ = b.String() // jsondata->$1 = $2
-//  _ = b.Params()  // ["name", "Tom"]
+//  _ = b.Params() // ["name", "Tom"]
 func (g *WhereGroup) WhereRawOr(query string, params ...interface{}) *WhereGroup {
 	var (
 		f = &format{
@@ -76,7 +76,7 @@ func (g *WhereGroup) WhereRawOr(query string, params ...interface{}) *WhereGroup
 // WhereIn adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereIn("id", 1, 2, 3)
 //  _ = b.String() // "id" IN ($1, $2, $3)
-//  _ = b.Params()  // [1, 2, 3]
+//  _ = b.Params() // [1, 2, 3]
 func (g *WhereGroup) WhereIn(field string, params ...interface{}) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, params...)
@@ -89,7 +89,7 @@ func (g *WhereGroup) WhereIn(field string, params ...interface{}) *WhereGroup {
 // WhereInOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereInOr("id", 1, 2, 3)
 //  _ = b.String() // "id" IN ($1, $2, $3)
-//  _ = b.Params()  // [1, 2, 3]
+//  _ = b.Params() // [1, 2, 3]
 func (g *WhereGroup) WhereInOr(field string, params ...interface{}) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, params...)
@@ -102,7 +102,7 @@ func (g *WhereGroup) WhereInOr(field string, params ...interface{}) *WhereGroup 
 // WhereNotIn adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotIn("id", 1, 2, 3)
 //  _ = b.String() // "id" NOT IN ($1, $2, $3)
-//  _ = b.Params()  // [1, 2, 3]
+//  _ = b.Params() // [1, 2, 3]
 func (g *WhereGroup) WhereNotIn(field string, params ...interface{}) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, params...)
@@ -115,7 +115,7 @@ func (g *WhereGroup) WhereNotIn(field string, params ...interface{}) *WhereGroup
 // WhereNotInOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotInOr("id", 1, 2, 3)
 //  _ = b.String() // "id" NOT IN ($1, $2, $3)
-//  _ = b.Params()  // [1, 2, 3]
+//  _ = b.Params() // [1, 2, 3]
 func (g *WhereGroup) WhereNotInOr(field string, params ...interface{}) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, params...)
@@ -128,7 +128,7 @@ func (g *WhereGroup) WhereNotInOr(field string, params ...interface{}) *WhereGro
 // WhereInSub adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereInSub("id", qb.Query(`SELECT id FROM table name = %p`, "Tom"))
 //  _ = b.String() // "id" IN (SELECT id FROM table name = $1)
-//  _ = b.Params()  // ["Tom"]
+//  _ = b.Params() // ["Tom"]
 func (g *WhereGroup) WhereInSub(field string, query Builder) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, query.Params()...)
@@ -141,7 +141,7 @@ func (g *WhereGroup) WhereInSub(field string, query Builder) *WhereGroup {
 // WhereInSubOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereInSubOr("id", qb.Query(`SELECT id FROM table name = %p`, "Tom"))
 //  _ = b.String() // "id" IN (SELECT id FROM table name = $1)
-//  _ = b.Params()  // ["Tom"]
+//  _ = b.Params() // ["Tom"]
 func (g *WhereGroup) WhereInSubOr(field string, query Builder) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, query.Params()...)
@@ -154,7 +154,7 @@ func (g *WhereGroup) WhereInSubOr(field string, query Builder) *WhereGroup {
 // WhereNotInSub adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotInSub("id", qb.Query(`SELECT id FROM table name = %p`, "Tom"))
 //  _ = b.String() // "id" NOT IN (SELECT id FROM table name = $1)
-//  _ = b.Params()  // ["Tom"]
+//  _ = b.Params() // ["Tom"]
 func (g *WhereGroup) WhereNotInSub(field string, query Builder) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, query.Params()...)
@@ -167,7 +167,7 @@ func (g *WhereGroup) WhereNotInSub(field string, query Builder) *WhereGroup {
 // WhereNotInSubOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotInSubOr("id", qb.Query(`SELECT id FROM table name = %p`, "Tom"))
 //  _ = b.String() // "id" NOT IN (SELECT id FROM table name = $1)
-//  _ = b.Params()  // ["Tom"]
+//  _ = b.Params() // ["Tom"]
 func (g *WhereGroup) WhereNotInSubOr(field string, query Builder) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, query.Params()...)
@@ -180,7 +180,7 @@ func (g *WhereGroup) WhereNotInSubOr(field string, query Builder) *WhereGroup {
 // WhereNull adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNull("data")
 //  _ = b.String() // "data" IS NULL
-//  _ = b.Params()  // []
+//  _ = b.Params() // []
 func (g *WhereGroup) WhereNull(field string) *WhereGroup {
 	boolean := g.and()
 	g.groups = append(g.groups, func() string {
@@ -192,7 +192,7 @@ func (g *WhereGroup) WhereNull(field string) *WhereGroup {
 // WhereNullOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNullOr("data")
 //  _ = b.String() // "data" IS NULL
-//  _ = b.Params()  // []
+//  _ = b.Params() // []
 func (g *WhereGroup) WhereNullOr(field string) *WhereGroup {
 	boolean := g.or()
 	g.groups = append(g.groups, func() string {
@@ -204,7 +204,7 @@ func (g *WhereGroup) WhereNullOr(field string) *WhereGroup {
 // WhereNotNull adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotNull("data")
 //  _ = b.String() // "data" IS NOT NULL
-//  _ = b.Params()  // []
+//  _ = b.Params() // []
 func (g *WhereGroup) WhereNotNull(field string) *WhereGroup {
 	boolean := g.and()
 	g.groups = append(g.groups, func() string {
@@ -216,7 +216,7 @@ func (g *WhereGroup) WhereNotNull(field string) *WhereGroup {
 // WhereNotNullOr adds an expression to the group
 //  var b = new(qb.WhereGroup).WhereNotNullOr("data")
 //  _ = b.String() // "data" IS NOT NULL
-//  _ = b.Params()  // []
+//  _ = b.Params() // []
 func (g *WhereGroup) WhereNotNullOr(field string) *WhereGroup {
 	boolean := g.or()
 	g.groups = append(g.groups, func() string {
@@ -229,7 +229,7 @@ func (g *WhereGroup) WhereNotNullOr(field string) *WhereGroup {
 //  var g = new(qb.WhereGroup).Where("id", "=", 1).WhereOr("id", "=", 2)
 //  var b = new(qb.WhereGroup).Where("name", "=", "Tom").WhereGroup(g)
 //  _ = b.String() // "name" = $1 AND ("id" = $2 OR "id" = $3)
-//  _ = b.Params()  // ["Tom", 1, 2]
+//  _ = b.Params() // ["Tom", 1, 2]
 func (g *WhereGroup) WhereGroup(group *WhereGroup) *WhereGroup {
 	boolean := g.and()
 	g.params = append(g.params, group.Params()...)
@@ -243,7 +243,7 @@ func (g *WhereGroup) WhereGroup(group *WhereGroup) *WhereGroup {
 //  var g = new(qb.WhereGroup).Where("id", "=", 1).WhereOr("id", "=", 2)
 //  var b = new(qb.WhereGroup).Where("name", "=", "Tom").WhereGroupOr(g)
 //  _ = b.String() // "name" = $1 AND ("id" = $2 OR "id" = $3)
-//  _ = b.Params()  // ["Tom", 1, 2]
+//  _ = b.Params() // ["Tom", 1, 2]
 func (g *WhereGroup) WhereGroupOr(group *WhereGroup) *WhereGroup {
 	boolean := g.or()
 	g.params = append(g.params, group.Params()...)
