@@ -47,7 +47,7 @@ func (g *WhereGroup) WhereRaw(query string, params ...interface{}) *WhereGroup {
 		}
 		b = g.and()
 	)
-	g.params = append(g.params, params...)
+	g.params = append(g.params, f.Params()...)
 	g.groups = append(g.groups, func() string {
 		return b + f.Grammar(g.g()).String()
 	})
@@ -66,7 +66,7 @@ func (g *WhereGroup) WhereRawOr(query string, params ...interface{}) *WhereGroup
 		}
 		b = g.or()
 	)
-	g.params = append(g.params, params...)
+	g.params = append(g.params, f.Params()...)
 	g.groups = append(g.groups, func() string {
 		return b + f.Grammar(g.g()).String()
 	})

@@ -33,7 +33,7 @@ func (g *SetGroup) SetRaw(query string, params ...interface{}) *SetGroup {
 		params:  params,
 		grammar: g.g(),
 	}
-	g.params = append(g.params, params...)
+	g.params = append(g.params, f.Params()...)
 	g.groups = append(g.groups, func() string {
 		return ", " + f.Grammar(g.g()).String()
 	})

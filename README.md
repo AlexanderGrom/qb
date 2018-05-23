@@ -133,7 +133,7 @@ func (r *CarRepository) GetByFilter(filter CarFilter) (_ []Car, err error) {
     `, builder, filter.Limit, filter.Offset)
 
     var rows *sql.Rows
-    if rows, err = r.db.Query(query.String(), query.Params()); err != nil {
+    if rows, err = r.db.Query(query.String(), query.Params()...); err != nil {
         return nil, err
     }
     defer rows.Close()

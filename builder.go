@@ -90,6 +90,7 @@ func (f *format) String() string {
 			b.WriteString(f.query[s : i-1])
 			b.WriteString(toString(f.params[p]))
 			s = i + 1
+			r = false
 			p++
 		case f.query[i] == 'p' && r:
 			if p >= len(f.params) {
@@ -98,6 +99,7 @@ func (f *format) String() string {
 			b.WriteString(f.query[s : i-1])
 			b.WriteString(f.g().Placeholder(1))
 			s = i + 1
+			r = false
 			p++
 		default:
 			r = false
@@ -109,12 +111,36 @@ func (f *format) String() string {
 
 // Params returns parameters for query
 func (f *format) Params() []interface{} {
-	var params = make([]interface{}, 0, len(f.params))
-	for _, p := range f.params {
-		if b, ok := p.(Builder); ok {
-			params = append(params, b.Params()...)
-		} else {
-			params = append(params, p)
+	var (
+		params = make([]interface{}, 0, len(f.params))
+		record = false
+	)
+	for i, p := 0, 0; i < len(f.query); i++ {
+		switch {
+		case f.query[i] == '%':
+			record = !record
+		case f.query[i] == 's' && record:
+			if p >= len(f.params) {
+				panic("qb: parameter not found")
+			}
+			if b, ok := f.params[p].(Builder); ok {
+				params = append(params, b.Params()...)
+			}
+			p++
+			record = false
+		case f.query[i] == 'p' && record:
+			if p >= len(f.params) {
+				panic("qb: parameter not found")
+			}
+			if b, ok := f.params[p].(Builder); ok {
+				params = append(params, b.Params()...)
+			} else {
+				params = append(params, f.params[p])
+			}
+			p++
+			record = false
+		default:
+			record = false
 		}
 	}
 	return params
