@@ -18,7 +18,7 @@ qb.DefaultGrammar("postgres")
 
 // ...
 
-b := new(qb.WhereGroup).
+b := new(qb.WhereBuilder).
     Where("type", "=", "a").
     WhereOr("type", "=", "b")
 
@@ -33,7 +33,7 @@ fmt.Println(q.Params())
 
 Update ...
 ```go
-b := new(qb.SetGroup).
+b := new(qb.SetBuilder).
     Set("name", "Marty").
     Set("surname", "McFly")
 
@@ -48,7 +48,7 @@ fmt.Println(q.Params())
 
 Insert ...
 ```go
-b := new(qb.ValuesGroup).
+b := new(qb.ValuesBuilder).
     Values(1, "Marty", "McFly")
 
 q := qb.Query("INSERT INTO table (id, name, surname) VALUES %s", b)
@@ -57,6 +57,21 @@ q := qb.Query("INSERT INTO table (id, name, surname) VALUES %s", b)
 fmt.Println(q)
 
 // [1, "Marty", "McFly"]
+fmt.Println(q.Params())
+```
+
+Array ...
+```go
+b := new(qb.ListBuilder).
+	Append("one", "two").
+    Append("three")
+
+q := Query("SELECT id FROM table WHERE name ?| ARRAY[%s]", b)
+
+// SELECT id FROM table WHERE name ?| ARRAY[$1, $2, $3]
+fmt.Println(q)
+
+// ["one", "two", "three"]
 fmt.Println(q.Params())
 ```
 
@@ -89,7 +104,7 @@ type (
 )
 
 func (r *CarRepository) GetByFilter(filter CarFilter) (_ []Car, err error) {
-    var builder = new(qb.WhereGroup).WhereRaw("1=1")
+    var builder = new(qb.WhereBuilder).WhereRaw("1=1")
 
     if len(filter.Mark) > 0 {
         builder.Where("mark", "=", filter.Mark)

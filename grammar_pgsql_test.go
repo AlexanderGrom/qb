@@ -34,6 +34,9 @@ func TestPgSQL_Wrap(t *testing.T) {
 func TestPgSQL_Placeholder(t *testing.T) {
 	var res string
 
+	res = PgsqlGrammar().Placeholder(0)
+	assert.Equal(t, ``, res)
+
 	res = PgsqlGrammar().Placeholder(1)
 	assert.Equal(t, `$1`, res)
 

@@ -7,7 +7,7 @@ import (
 )
 
 func TestWhere(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("type", "=", "a").
 		WhereOr("type", "=", "b")
 
@@ -16,7 +16,7 @@ func TestWhere(t *testing.T) {
 }
 
 func TestSelectWhere(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("type", "=", "a").
 		WhereOr("type", "=", "b")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -27,7 +27,7 @@ func TestSelectWhere(t *testing.T) {
 
 func TestSelectWhereMySQLGrammar(t *testing.T) {
 	g := MysqlGrammar()
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("type", "=", "a").
 		WhereOr("type", "=", "b")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10).Grammar(g)
@@ -37,7 +37,7 @@ func TestSelectWhereMySQLGrammar(t *testing.T) {
 }
 
 func TestWhereRaw(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereRaw("class IN (%p, %p, %p)", 1, 2, 3).
 		WhereRawOr("type IN (%p, %p, %p)", "a", "b", "c")
 
@@ -46,7 +46,7 @@ func TestWhereRaw(t *testing.T) {
 }
 
 func TestSelectWhereRaw(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereRaw("class IN (%p, %p, %p)", 1, 2, 3).
 		WhereRawOr("type IN (%p, %p, %p)", "a", "b", "c")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -56,7 +56,7 @@ func TestSelectWhereRaw(t *testing.T) {
 }
 
 func TestWhereIn(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereIn("class", 1, 2, 3).
 		WhereInOr("type", "a", "b", "c")
 
@@ -65,7 +65,7 @@ func TestWhereIn(t *testing.T) {
 }
 
 func TestSelectWhereIn(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereIn("class", 1, 2, 3).
 		WhereInOr("type", "a", "b", "c")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -75,7 +75,7 @@ func TestSelectWhereIn(t *testing.T) {
 }
 
 func TestWhereNotIn(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNotIn("class", 1, 2, 3).
 		WhereNotInOr("type", "a", "b", "c")
 
@@ -84,7 +84,7 @@ func TestWhereNotIn(t *testing.T) {
 }
 
 func TestSelectWhereNotIn(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNotIn("class", 1, 2, 3).
 		WhereNotInOr("type", "a", "b", "c")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -94,7 +94,7 @@ func TestSelectWhereNotIn(t *testing.T) {
 }
 
 func TestWhereInSub(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("status", "=", "active").
 		WhereInSub("id", Query(`SELECT id FROM table name = %p`, "test")).
 		WhereInSubOr("id", Query(`SELECT id FROM table surname = %p`, "best"))
@@ -104,7 +104,7 @@ func TestWhereInSub(t *testing.T) {
 }
 
 func TestSelectWhereInSub(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("status", "=", "active").
 		WhereInSub("id", Query(`SELECT id FROM table name = %p`, "test")).
 		WhereInSubOr("id", Query(`SELECT id FROM table surname = %p`, "best"))
@@ -115,7 +115,7 @@ func TestSelectWhereInSub(t *testing.T) {
 }
 
 func TestWhereNotInSub(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("status", "=", "active").
 		WhereNotInSub("id", Query(`SELECT id FROM table name = %p`, "test")).
 		WhereNotInSubOr("id", Query(`SELECT id FROM table surname = %p`, "best"))
@@ -125,7 +125,7 @@ func TestWhereNotInSub(t *testing.T) {
 }
 
 func TestSelectWhereNotInSub(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		Where("status", "=", "active").
 		WhereNotInSub("id", Query(`SELECT id FROM table name = %p`, "test")).
 		WhereNotInSubOr("id", Query(`SELECT id FROM table surname = %p`, "best"))
@@ -136,7 +136,7 @@ func TestSelectWhereNotInSub(t *testing.T) {
 }
 
 func TestWhereNull(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNull("updated_at").
 		WhereNullOr("deleted_at")
 
@@ -145,7 +145,7 @@ func TestWhereNull(t *testing.T) {
 }
 
 func TestSelectWhereNull(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNull("updated_at").
 		WhereNullOr("deleted_at")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -155,7 +155,7 @@ func TestSelectWhereNull(t *testing.T) {
 }
 
 func TestWhereNotNull(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNotNull("updated_at").
 		WhereNotNullOr("deleted_at")
 
@@ -164,7 +164,7 @@ func TestWhereNotNull(t *testing.T) {
 }
 
 func TestSelectWhereNotNull(t *testing.T) {
-	b := new(WhereGroup).
+	b := new(WhereBuilder).
 		WhereNotNull("updated_at").
 		WhereNotNullOr("deleted_at")
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
@@ -173,35 +173,35 @@ func TestSelectWhereNotNull(t *testing.T) {
 	assert.Equal(t, []interface{}{"param", 10}, q.Params())
 }
 
-func TestWhereGroup(t *testing.T) {
-	g1 := new(WhereGroup).
+func TestWhereBuilder(t *testing.T) {
+	g1 := new(WhereBuilder).
 		Where("status", "=", "active").
 		Where("type", "=", "a")
 
-	g2 := new(WhereGroup).
+	g2 := new(WhereBuilder).
 		Where("status", "=", "passive").
 		Where("type", "=", "b")
 
-	b := new(WhereGroup).
-		WhereGroup(g1).
-		WhereGroupOr(g2)
+	b := new(WhereBuilder).
+		WhereBuilder(g1).
+		WhereBuilderOr(g2)
 
 	assert.Equal(t, `("status" = $1 AND "type" = $2) OR ("status" = $3 AND "type" = $4)`, b.String())
 	assert.Equal(t, []interface{}{"active", "a", "passive", "b"}, b.Params())
 }
 
-func TestSelectWhereGroup(t *testing.T) {
-	g1 := new(WhereGroup).
+func TestSelectWhereBuilder(t *testing.T) {
+	g1 := new(WhereBuilder).
 		Where("status", "=", "active").
 		Where("type", "=", "a")
 
-	g2 := new(WhereGroup).
+	g2 := new(WhereBuilder).
 		Where("status", "=", "passive").
 		Where("type", "=", "b")
 
-	b := new(WhereGroup).
-		WhereGroup(g1).
-		WhereGroupOr(g2)
+	b := new(WhereBuilder).
+		WhereBuilder(g1).
+		WhereBuilderOr(g2)
 
 	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
 

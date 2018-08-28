@@ -8,6 +8,7 @@ import (
 
 func TestMySQL_Wrap(t *testing.T) {
 	var res string
+
 	res = MysqlGrammar().Wrap("name")
 	assert.Equal(t, "`name`", res)
 
@@ -20,6 +21,9 @@ func TestMySQL_Wrap(t *testing.T) {
 
 func TestMySQL_Placeholder(t *testing.T) {
 	var res string
+
+	res = MysqlGrammar().Placeholder(0)
+	assert.Equal(t, ``, res)
 
 	res = MysqlGrammar().Placeholder(1)
 	assert.Equal(t, `?`, res)

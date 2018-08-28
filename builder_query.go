@@ -1,5 +1,5 @@
 // Package qb is a simple query builder.
-//  var b = new(qb.WhereGroup).
+//  var b = new(qb.WhereBuilder).
 //    Where("name", "=", "Marty").
 //    Where("surname", "=", "McFly")
 //

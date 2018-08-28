@@ -78,10 +78,12 @@ func (g *pgsqlGrammar) placeholder() string {
 }
 
 func (g *pgsqlGrammar) Placeholder(n int) string {
-	if n <= 0 {
+	if n < 0 {
 		panic("qb: negative Placeholder count")
 	}
-
+	if n == 0 {
+		return ""
+	}
 	if n == 1 {
 		return "$" + g.placeholder()
 	}

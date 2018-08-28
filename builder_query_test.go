@@ -7,7 +7,7 @@ import (
 )
 
 func TestBuilder_Query(t *testing.T) {
-	b := new(WhereGroup).Where("name", "=", "test").WhereRaw("%s = %p", "field", "param")
+	b := new(WhereBuilder).Where("name", "=", "test").WhereRaw("%s = %p", "field", "param")
 	q := Query(
 		"SELECT *, %%s, %%p, %, %%, %s%s FROM table WHERE status = %p AND %s ORDER BY %s %s LIMIT %p, OFFSET %p",
 		"r2", "d2", "active", b, "id", "asc", 10, 0,
@@ -24,7 +24,7 @@ func TestBuilder_Query(t *testing.T) {
 
 func TestBuilder_DefaultGlammar(t *testing.T) {
 	DefaultGrammar("mysql")
-	b := new(WhereGroup).Where("name", "=", "test")
+	b := new(WhereBuilder).Where("name", "=", "test")
 	q := Query(
 		"SELECT *, %%s, %%p, %, %% FROM table WHERE status = %p AND %s LIMIT %p, OFFSET %p",
 		"active", b, 10, 0,
@@ -37,7 +37,7 @@ func TestBuilder_DefaultGlammar(t *testing.T) {
 }
 
 func TestBuilder_Glammar(t *testing.T) {
-	b := new(WhereGroup).Where("name", "=", "test")
+	b := new(WhereBuilder).Where("name", "=", "test")
 	q := Query(
 		"SELECT *, %%s, %%p, %, %% FROM table WHERE status = %p AND %s LIMIT %p, OFFSET %p",
 		"active", b, 10, 0,
@@ -54,7 +54,7 @@ func TestBuilder_Glammar(t *testing.T) {
 
 func BenchmarkBuilder_QueryString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		var b = new(WhereGroup).
+		var b = new(WhereBuilder).
 			Where("type", "=", "a").
 			WhereOr("type", "=", "b")
 
@@ -64,7 +64,7 @@ func BenchmarkBuilder_QueryString(b *testing.B) {
 
 func BenchmarkBuilder_QueryParams(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		var b = new(WhereGroup).
+		var b = new(WhereBuilder).
 			Where("type", "=", "a").
 			WhereOr("type", "=", "b")
 

@@ -8,6 +8,7 @@ import (
 
 func TestSQLite_Wrap(t *testing.T) {
 	var res string
+
 	res = SQLiteGrammar().Wrap("name")
 	assert.Equal(t, "`name`", res)
 
@@ -20,6 +21,9 @@ func TestSQLite_Wrap(t *testing.T) {
 
 func TestSQLite_Placeholder(t *testing.T) {
 	var res string
+
+	res = SQLiteGrammar().Placeholder(0)
+	assert.Equal(t, ``, res)
 
 	res = SQLiteGrammar().Placeholder(1)
 	assert.Equal(t, `?`, res)

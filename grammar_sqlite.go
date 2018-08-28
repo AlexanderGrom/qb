@@ -49,10 +49,12 @@ func (g *sqliteGrammar) Wrap(s string) string {
 
 // Placeholder returns n count placeholders
 func (g *sqliteGrammar) Placeholder(n int) string {
-	if n <= 0 {
+	if n < 0 {
 		panic("qb: negative Placeholder count")
 	}
-
+	if n == 0 {
+		return ""
+	}
 	if n == 1 {
 		return "?"
 	}
