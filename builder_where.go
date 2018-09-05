@@ -7,6 +7,7 @@ type WhereBuilder struct {
 	groups  []func() string
 	params  []interface{}
 	grammar Grammar
+	regular bool
 }
 
 // Where adds an expression to the group
@@ -255,6 +256,7 @@ func (b *WhereBuilder) WhereBuilderOr(group *WhereBuilder) *WhereBuilder {
 
 // String implementations Stringer interface
 func (b *WhereBuilder) String() string {
+	defer b.r()
 	var s strings.Builder
 	for _, f := range b.groups {
 		s.WriteString(f())
@@ -270,6 +272,7 @@ func (b *WhereBuilder) Params() []interface{} {
 // Grammar sets a Grammar
 func (b *WhereBuilder) Grammar(grammar Grammar) Builder {
 	b.grammar = grammar
+	b.regular = true
 	return b
 }
 
@@ -278,6 +281,12 @@ func (b *WhereBuilder) g() Grammar {
 		b.grammar = grammar()
 	}
 	return b.grammar
+}
+
+func (b *WhereBuilder) r() {
+	if !b.regular {
+		b.grammar = grammar()
+	}
 }
 
 func (b *WhereBuilder) and() string {

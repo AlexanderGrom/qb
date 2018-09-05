@@ -7,6 +7,7 @@ type ListBuilder struct {
 	groups  []func() string
 	params  []interface{}
 	grammar Grammar
+	regular bool
 }
 
 // Append appends new values to the list
@@ -29,6 +30,7 @@ func (b *ListBuilder) String() string {
 	if len(b.groups) == 0 {
 		return ""
 	}
+	defer b.r()
 	var s strings.Builder
 	for _, f := range b.groups {
 		s.WriteString(f())
@@ -44,6 +46,7 @@ func (b *ListBuilder) Params() []interface{} {
 // Grammar sets a Grammar
 func (b *ListBuilder) Grammar(grammar Grammar) Builder {
 	b.grammar = grammar
+	b.regular = true
 	return b
 }
 
@@ -52,4 +55,10 @@ func (b *ListBuilder) g() Grammar {
 		b.grammar = grammar()
 	}
 	return b.grammar
+}
+
+func (b *ListBuilder) r() {
+	if !b.regular {
+		b.grammar = grammar()
+	}
 }

@@ -7,6 +7,7 @@ type ValuesBuilder struct {
 	groups  []func() string
 	params  []interface{}
 	grammar Grammar
+	regular bool
 }
 
 // Values sets values and adds a new VALUES expression
@@ -28,6 +29,7 @@ func (b *ValuesBuilder) String() string {
 	if len(b.groups) == 0 {
 		return ""
 	}
+	defer b.r()
 	var s strings.Builder
 	for _, f := range b.groups {
 		s.WriteString(f())
@@ -51,4 +53,10 @@ func (b *ValuesBuilder) g() Grammar {
 		b.grammar = grammar()
 	}
 	return b.grammar
+}
+
+func (b *ValuesBuilder) r() {
+	if !b.regular {
+		b.grammar = grammar()
+	}
 }

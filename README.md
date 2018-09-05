@@ -63,7 +63,7 @@ fmt.Println(q.Params())
 Array ...
 ```go
 b := new(qb.ListBuilder).
-	Append("one", "two").
+    Append("one", "two").
     Append("three")
 
 q := Query("SELECT id FROM table WHERE name ?| ARRAY[%s]", b)

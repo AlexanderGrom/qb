@@ -9,6 +9,7 @@ type SetBuilder struct {
 	groups  []func() string
 	params  []interface{}
 	grammar Grammar
+	regular bool
 }
 
 // Set adds a new SET expression
@@ -45,6 +46,7 @@ func (b *SetBuilder) String() string {
 	if len(b.groups) == 0 {
 		return ""
 	}
+	defer b.r()
 	var s strings.Builder
 	for _, f := range b.groups {
 		s.WriteString(f())
@@ -68,4 +70,10 @@ func (b *SetBuilder) g() Grammar {
 		b.grammar = grammar()
 	}
 	return b.grammar
+}
+
+func (b *SetBuilder) r() {
+	if !b.regular {
+		b.grammar = grammar()
+	}
 }

@@ -25,6 +25,17 @@ func TestSelectWhere(t *testing.T) {
 	assert.Equal(t, []interface{}{"param", "a", "b", 10}, q.Params())
 }
 
+func TestDoubleSelectWhere(t *testing.T) {
+	b := new(WhereBuilder).
+		Where("type", "=", "a").
+		WhereOr("type", "=", "b")
+	q := Query("SELECT id FROM table WHERE param = %p AND %s LIMIT %p", "param", b, 10)
+
+	assert.Equal(t, `SELECT id FROM table WHERE param = $1 AND "type" = $2 OR "type" = $3 LIMIT $4`, q.String())
+	assert.Equal(t, `SELECT id FROM table WHERE param = $1 AND "type" = $2 OR "type" = $3 LIMIT $4`, q.String())
+	assert.Equal(t, []interface{}{"param", "a", "b", 10}, q.Params())
+}
+
 func TestSelectWhereMySQLGrammar(t *testing.T) {
 	g := MysqlGrammar()
 	b := new(WhereBuilder).

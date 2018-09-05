@@ -36,6 +36,7 @@ type (
 		query   string
 		params  []interface{}
 		grammar Grammar
+		regular bool
 	}
 )
 
@@ -66,6 +67,7 @@ func Query(query string, params ...interface{}) Builder {
 
 // String implementations Stringer interface
 func (f *format) String() string {
+	defer f.r()
 	var (
 		b strings.Builder
 		p int
@@ -149,6 +151,7 @@ func (f *format) Params() []interface{} {
 // Grammar sets a Grammar
 func (f *format) Grammar(grammar Grammar) Builder {
 	f.grammar = grammar
+	f.regular = true
 	return f
 }
 
@@ -157,4 +160,10 @@ func (f *format) g() Grammar {
 		f.grammar = grammar()
 	}
 	return f.grammar
+}
+
+func (f *format) r() {
+	if !f.regular {
+		f.grammar = grammar()
+	}
 }
