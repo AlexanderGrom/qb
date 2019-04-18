@@ -72,9 +72,9 @@ func (g *pgsqlGrammar) Wrap(s string) string {
 }
 
 // Placeholder returns n count placeholders
-func (g *pgsqlGrammar) placeholder() string {
+func (g *pgsqlGrammar) placeholder() int {
 	g.placeholders++
-	return strconv.Itoa(g.placeholders)
+	return g.placeholders
 }
 
 func (g *pgsqlGrammar) Placeholder(n int) string {
@@ -85,7 +85,7 @@ func (g *pgsqlGrammar) Placeholder(n int) string {
 		return ""
 	}
 	if n == 1 {
-		return "$" + g.placeholder()
+		return "$" + strconv.Itoa(g.placeholder())
 	}
 
 	var (
@@ -96,13 +96,12 @@ func (g *pgsqlGrammar) Placeholder(n int) string {
 		cap += intWeight(g.placeholders + i)
 	}
 
-	var (
-		b = make([]byte, cap)
-		w = copy(b, "$"+g.placeholder())
-	)
+	var b = make([]byte, 0, cap)
+	b = append(b, '$')
+	b = strconv.AppendInt(b, int64(g.placeholder()), 10)
 	for i := 1; i < n; i++ {
-		w += copy(b[w:], sep)
-		w += copy(b[w:], "$"+g.placeholder())
+		b = append(b, ',', ' ', '$')
+		b = strconv.AppendInt(b, int64(g.placeholder()), 10)
 	}
 
 	return *(*string)(unsafe.Pointer(&b))
